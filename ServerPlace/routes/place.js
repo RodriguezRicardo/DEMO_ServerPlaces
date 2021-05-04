@@ -6,9 +6,12 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = 'mongodb+srv://Lorenzo:casada11@learnandtravel.qzfpb.mongodb.net/LearnAndTravel?retryWrites=true&w=majority'
 
 /* GET users listing. */
-router.get('/:place', function (req, res, next) {
+router.get('/:y/:x', function (req, res, next) {
     console.log(req.params); //Leggo i parametri passati all'url
-    p = req.params.place;
+    y = req.params.y;
+    x = req.params.x;
+   
+    
 
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     client.connect(searchPlace);
@@ -16,8 +19,9 @@ router.get('/:place', function (req, res, next) {
         function searchPlace(err){
             if (err) console.log("connesione al db non riuscita");
             else{
+                q= `{$and[{'Coordinate.Latitudine' : ${y}},{'Coordinate.Longitudine': ${x}}]}`
                 const collection = client.db("LearnAndTravel").collection("Places");
-                collection.find({"Città": p}).toArray(callBackQuery);
+                collection.find(q).toArray(callBackQuery);
             }
 
         }  
