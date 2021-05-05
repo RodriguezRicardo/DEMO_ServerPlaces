@@ -10,6 +10,9 @@ router.get('/:y/:x', function (req, res, next) {
     console.log(req.params); //Leggo i parametri passati all'url
     y = req.params.y;
     x = req.params.x;
+
+    y1 = parseFloat(y);
+    x1 = parseFloat(x);
    
     
 
@@ -19,9 +22,9 @@ router.get('/:y/:x', function (req, res, next) {
         function searchPlace(err){
             if (err) console.log("connesione al db non riuscita");
             else{
-                q= `{$and[{'Coordinate.Latitudine' : ${y}},{'Coordinate.Longitudine': ${x}}]}`
                 const collection = client.db("LearnAndTravel").collection("Places");
-                collection.find(q).toArray(callBackQuery);
+               
+                collection.find({$and:[{'Coordinate.Latitudine' : y1},{'Coordinate.Longitudine': x1}]}).toArray(callBackQuery);
             }
 
         }  
