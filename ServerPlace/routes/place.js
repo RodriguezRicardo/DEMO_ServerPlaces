@@ -6,13 +6,18 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = 'mongodb+srv://Lorenzo:casada11@learnandtravel.qzfpb.mongodb.net/LearnAndTravel?retryWrites=true&w=majority'
 
 /* GET users listing. */
-router.get('/:y/:x', function (req, res, next) {
+router.get('/:yMin/:xMin/:yMax/:xMax', function (req, res, next) {
     console.log(req.params); //Leggo i parametri passati all'url
-    y = req.params.y;
-    x = req.params.x;
+    yMin = req.params.yMin;
+    xMin = req.params.xMin;
+    yMax = req.params.yMax;
+    xMax = req.params.xMax;
 
-    y1 = parseFloat(y);
-    x1 = parseFloat(x);
+    yMinFloat = parseFloat(yMin);
+    xMinFloat = parseFloat(xMin);
+    yMaxFloat = parseFloat(yMax);
+    xMaxFloat = parseFloat(xMax);
+
    
     
 
@@ -24,7 +29,7 @@ router.get('/:y/:x', function (req, res, next) {
             else{
                 const collection = client.db("LearnAndTravel").collection("Places");
                
-                collection.find({$and:[{'Coordinate.Latitudine' : y1},{'Coordinate.Longitudine': x1}]}).toArray(callBackQuery);
+                collection.find({$and:[{'Coordinate.Latitudine' : {'$gt': yMinFloat, '$lt': yMaxFloat}},{'Coordinate.Longitudine':{'$gt': xMinFloat, '$lt': xMaxFloat}}]}).toArray(callBackQuery);
             }
 
         }  
